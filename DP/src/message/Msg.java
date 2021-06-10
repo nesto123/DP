@@ -12,6 +12,7 @@ public class Msg {
     int srcId, destId;
     String tag;
     String msgBuf;
+    String title;
     public Msg(int s, int t, String msgType, String buf) {
         this.srcId = s;
         destId = t;
@@ -63,6 +64,7 @@ public class Msg {
         int srcId = Integer.parseInt(st.nextToken());
         int destId = Integer.parseInt(st.nextToken());
         String tag = st.nextToken();
+        String title = st.nextToken();
         String buf = st.nextToken("#");
         return new Msg(srcId, destId, tag, buf);
     }
@@ -73,7 +75,7 @@ public class Msg {
     public String toString(){
         String s = String.valueOf(srcId)+" " +
                     String.valueOf(destId)+ " " +
-                    tag + " " + msgBuf + "#";
+                    tag + " " + title + " " + msgBuf + "#";
         return s;
     }
 }

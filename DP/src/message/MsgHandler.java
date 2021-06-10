@@ -1,10 +1,8 @@
 /**
  * 
  */
-package camera;
+package message;
 import java.io.*;
-
-import message.Msg;
 
 /**
  * @author franv

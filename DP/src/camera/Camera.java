@@ -3,6 +3,8 @@
  */
 package camera;
 
+import message.MsgHandler;
+
 /**
  * @author franv
  *

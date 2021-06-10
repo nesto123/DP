@@ -5,8 +5,8 @@ package linker;
 import java.io.*; 
 import java.lang.*;
 
-import camera.MsgHandler;
 import message.Msg;
+import message.MsgHandler;
 
 /**
  * @author franv
