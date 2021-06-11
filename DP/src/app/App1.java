@@ -24,21 +24,19 @@ public class App1 extends Process {
     }
     public synchronized void handleMsg(Msg m, int src, String tag){
         if (tag.equals("chat")) {
-            System.out.println("File recived from " + src +".");
             //System.out.println(m.getMessage());
             FileSystem files = new FileSystem(String.valueOf(myId));
-            BufferedReader din = new BufferedReader(
-    				new InputStreamReader(System.in));
-            String fileName;
+            //BufferedReader din = new BufferedReader(
+    			//	new InputStreamReader(System.in));
+            String fileName=m.getTitle();
 			try {
-				fileName = App1.getUserInput(din, "Enter new file name:");
+				//fileName = App1.getUserInput(din, "Enter new file name:");
 				if(files.createFile(fileName,m.getMessage()) )
-	        		System.out.println("File " + fileName + " created.");
+	        		System.out.println("File " + fileName + " recived from " + src + ".");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	
 
         }
     }
@@ -71,6 +69,10 @@ public class App1 extends Process {
     }
     
     
+    /**
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
     	
     	
@@ -123,7 +125,7 @@ public class App1 extends Process {
                 if(!files.deleteFile(fileName))
             		throw new IOException("File coud not be deleted.");
                 
-                comm.sendMsg(destIds.getEntry(0), "chat", chatMsg);
+                comm.sendMsg(destIds.getEntry(0), "chat", chatMsg, fileName);
             }
             else if( chatMsg.equals("list"))
             {

@@ -27,13 +27,13 @@ public class Linker {
         connector = new Connector();
         connector.Connect(basename, myId, numProc, dataIn, dataOut);
     }
-    public void sendMsg(int destId, String tag, String msg) {     
+    public void sendMsg(int destId, String tag, String msg, String title) {     
         dataOut[destId].println(myId + " " + destId + " " + 
-				      tag + " " + msg + "#");
+				      tag + " " + title + " " + msg + "#");
         dataOut[destId].flush();
     }
-    public void sendMsg(int destId, String tag) {
-        sendMsg(destId, tag, " 0 ");
+    public void sendMsg(int destId, String tag, String title) {
+        sendMsg(destId, tag, " 0 ", title);
     }
     public void multicast(IntLinkedList destIds, String tag, String msg){
         for (int i=0; i<destIds.size(); i++) {
@@ -47,8 +47,9 @@ public class Linker {
         int srcId = Integer.parseInt(st.nextToken());
         int destId = Integer.parseInt(st.nextToken());
         String tag = st.nextToken();
+        String title = st.nextToken();
         String msg = st.nextToken("#");
-        return new Msg(srcId, destId, tag, msg);        
+        return new Msg(srcId, destId, tag, msg, title);        
     }
     public int getMyId() { return myId; }
     public int getNumProc() { return N; }

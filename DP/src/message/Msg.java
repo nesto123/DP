@@ -13,11 +13,12 @@ public class Msg {
     String tag;
     String msgBuf;
     String title;
-    public Msg(int s, int t, String msgType, String buf) {
+    public Msg(int s, int t, String msgType, String buf, String title) {
         this.srcId = s;
         destId = t;
         tag = msgType;
         msgBuf = buf;
+        this.title = title;
     }
     
     /** 
@@ -48,6 +49,9 @@ public class Msg {
         return msgBuf;
     }
     
+    public String getTitle() {
+    	return this.title;
+    }
     /** 
      * @return int
      */
@@ -66,7 +70,7 @@ public class Msg {
         String tag = st.nextToken();
         String title = st.nextToken();
         String buf = st.nextToken("#");
-        return new Msg(srcId, destId, tag, buf);
+        return new Msg(srcId, destId, tag, buf, title);
     }
     
     /** 
