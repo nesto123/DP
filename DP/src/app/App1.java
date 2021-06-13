@@ -31,8 +31,10 @@ public class App1 extends Process {
             String fileName=m.getTitle();
 			try {
 				//fileName = App1.getUserInput(din, "Enter new file name:");
-				if(files.createFile(fileName,m.getMessage()) )
+				if(files.createFile(fileName,m.getMessage()) ){
 	        		System.out.println("File " + fileName + " recived from " + src + ".");
+                    System.out.println( "Enter command (create,send,list,delete):" );
+                }
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -79,9 +81,9 @@ public class App1 extends Process {
         BufferedReader din = new BufferedReader(
 				new InputStreamReader(System.in));
         
-        String[] args1 =  App1.getUserInput(din, "Eneter arguemnts: ").split(" ");
+        String[] args1 =  App1.getUserInput(din, "Enter arguments: ").split(" ");
         
-    	// Možda prebacit sve da se èita sa ulaza, a ne sa komandne linije.
+    	// Moï¿½da prebacit sve da se ï¿½ita sa ulaza, a ne sa komandne linije.
         String baseName = args1[0];								//	Ime aplikacije
         myId = Integer.parseInt(args1[1]);					//	Broj tog processa
         int numProc = Integer.parseInt(args1[2]);				//	Ukupan broj procesa

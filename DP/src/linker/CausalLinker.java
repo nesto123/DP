@@ -10,9 +10,9 @@ import java.io.*;
 import message.*;
 
 /**
- * Algoritam za kauzalno ureðivanje implementiran je pomoæu ove klase.
- * Ova klasa proširuje klasu Linker da bi mogla raditi s porukama koje su 
- * proširene matricama.
+ * Algoritam za kauzalno ureï¿½ivanje implementiran je pomoï¿½u ove klase.
+ * Ova klasa proï¿½iruje klasu Linker da bi mogla raditi s porukama koje su 
+ * proï¿½irene matricama.
  * @author franv
  *
  */
@@ -30,9 +30,9 @@ public class CausalLinker extends Linker {
     }
     
     /**
-     * Poveæava M[myId][destId] da bi uzela u obzir dotiènu poruku,
-     * te prilaže ažuriranu M[][]uz poruku.
-     * @param destId odredište poruke
+     * Poveï¿½ava M[myId][destId] da bi uzela u obzir dotiï¿½nu poruku,
+     * te prilaï¿½e aï¿½uriranu M[][]uz poruku.
+     * @param destId odrediï¿½te poruke
      * @param tag tag poruke
      * @param msg sama poruka koja se salje
      */
@@ -42,12 +42,19 @@ public class CausalLinker extends Linker {
         super.sendMsg(destId, "matrix", Matrix.write(M));
         super.sendMsg(destId, tag, msg);
     }
+
+    public synchronized void sendMsg(int destId, String tag, String msg, String title)
+    {
+        M[myId][destId]++;
+        super.sendMsg(destId, "matrix", " 0 ", Matrix.write(M));
+        super.sendMsg(destId, tag, msg, title);
+    }
     
     /**
-     * Služi za slanje iste poruke veæem broju primatelja. Najprije se
-     * poveæava M[myId][destId] za sve destId iz zadane liste primatelja. 
-     * Zatim se tako ažurirana M[][]šalje kao prilog uz svaku kopiju poruke.
-     * @param destIds odredišta poruke
+     * Sluï¿½i za slanje iste poruke veï¿½em broju primatelja. Najprije se
+     * poveï¿½ava M[myId][destId] za sve destId iz zadane liste primatelja. 
+     * Zatim se tako aï¿½urirana M[][]ï¿½alje kao prilog uz svaku kopiju poruke.
+     * @param destIds odrediï¿½ta poruke
      * @param tag tag poruke
      * @param msg sama poruka koja se salje
      */
@@ -63,10 +70,10 @@ public class CausalLinker extends Linker {
     }
     
     /**
-     * Odreðuje je li poruka “kvalificirana” za isporuku aplikaciji.
+     * Odreï¿½uje je li poruka ï¿½kvalificiranaï¿½ za isporuku aplikaciji.
      * @param W primljena matrica
-     * @param srcId id pošiljatelja
-     * @return true ako je kvalificirana inaèe false
+     * @param srcId id poï¿½iljatelja
+     * @return true ako je kvalificirana inaï¿½e false
      */
     boolean okayToRecv(int W[][], int srcId) {
         if (W[srcId][myId] > M[srcId][myId]+1) return false;
@@ -76,7 +83,7 @@ public class CausalLinker extends Linker {
     }
     /**
      * Prolazi listom pendingQ da bi provjerila je li neka od poruka
-     * u njoj postala kvalificirana. Pronaðena kvalificirana poruka se iz
+     * u njoj postala kvalificirana. Pronaï¿½ena kvalificirana poruka se iz
      * pendingQ prebacuje u deliveryQ.
      */
     synchronized void checkPendingQ() {
@@ -92,8 +99,8 @@ public class CausalLinker extends Linker {
     // polls the channel given by fromId to add to the pendingQ
     /**
      * Koristi dvije vezane liste (reda) za spremanje poruka.
-     * Lista deliveryQ sadrži sve poruke koje su kvalificirane i mogu se isporuèiti.
-     * ­ Lista pendingQ sprema sve poruke koje su primljene no nisu još kvalificirane za
+     * Lista deliveryQ sadrï¿½i sve poruke koje su kvalificirane i mogu se isporuï¿½iti.
+     * ï¿½ Lista pendingQ sprema sve poruke koje su primljene no nisu joï¿½ kvalificirane za
      * isporuku
      */
     public Msg receiveMsg(int fromId) throws IOException {
