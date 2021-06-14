@@ -38,6 +38,8 @@ public class RecvCamera  extends Process implements Camera {
      * Value for global function
      */
     String myValue;
+    String[] locValue;
+    int rcvd;
     
     /**
      * Initially all channels are open and empty.
@@ -49,6 +51,9 @@ public class RecvCamera  extends Process implements Camera {
         closed = new boolean[N];
         chan = new LinkedList[N];
         myValue = "";
+        locValue = new String[initComm.getNumProc()];
+        for( int i = 0; i < locValue.length; i++ )
+            locValue[i] = "";
         for (int i = 0; i < N; i++)
         	//	Checks for existence of channel form process i to local process j.
             if (isNeighbor(i)) {
@@ -56,6 +61,7 @@ public class RecvCamera  extends Process implements Camera {
                 chan[i] = new LinkedList();
             } else closed[i] = true;
         this.app = app;
+        rcvd = 0;
     }
     /**
      * Changes  color of process to red, marks its local state and
@@ -74,6 +80,7 @@ public class RecvCamera  extends Process implements Camera {
      */
     public synchronized void handleMsg(Msg m, int src, String tag) {
         if (tag.equals("marker")) {
+            System.out.println(":: " + m.getTitle() + " ::" );
             if (myColor == white) globalState();
             closed[src] = true;
             String newLine = System.getProperty("line.separator");
@@ -84,9 +91,26 @@ public class RecvCamera  extends Process implements Camera {
                         while (!chan[i].isEmpty())
                             myValue = myValue.concat( newLine +
                             ( chan[i].removeFirst()).toString());
-                System.out.println( myValue );
+                if( myId != 0 ) {
+                    String[] lines = myValue.split(newLine);
+                    for( String line : lines ){
+                        sendMsg(0, "lokalna", line );
+                    }
+                    sendMsg(0, "spent", myId);
+                }
             }
-        } else { // application message
+        }
+        else if( tag.equals("lokalna") ){
+            locValue[src] = locValue[src].concat(m.getTitle() + m.getMessage() + System.getProperty("line.separator"));
+        }
+        else if( tag.equals("spent") ){
+            String newLine = System.getProperty("line.separator");
+            myValue = myValue.concat(newLine + "----------" + newLine + locValue[src]);
+            rcvd++;
+            if( rcvd >= this.N - 1 )
+                System.out.println( myValue );
+        }
+        else { // application message
             if ((myColor == red) && (!closed[src]))
                 chan[src].add(m);
             app.handleMsg(m, src, tag); // give it to app
