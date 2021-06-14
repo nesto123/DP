@@ -34,6 +34,10 @@ public class RecvCamera  extends Process implements Camera {
      * Tracks  state of k-th input channel.
      */
     LinkedList chan[] = null;
+    /**
+     * Value for global function
+     */
+    String myValue;
     
     /**
      * Initially all channels are open and empty.
@@ -44,6 +48,7 @@ public class RecvCamera  extends Process implements Camera {
         super(initComm);
         closed = new boolean[N];
         chan = new LinkedList[N];
+        myValue = "";
         for (int i = 0; i < N; i++)
         	//	Checks for existence of channel form process i to local process j.
             if (isNeighbor(i)) {
@@ -58,7 +63,7 @@ public class RecvCamera  extends Process implements Camera {
      */
     public synchronized void globalState() {
         myColor = red;
-        app.localState(); // record local State;
+        myValue = app.localState(); // record local State;
         sendToNeighbors("marker", myId);  // send Markers
     }
     /**
@@ -71,13 +76,15 @@ public class RecvCamera  extends Process implements Camera {
         if (tag.equals("marker")) {
             if (myColor == white) globalState();
             closed[src] = true;
+            String newLine = System.getProperty("line.separator");
             if (isDone()){
-                System.out.println("Channel State: Transit Messages ");
+                myValue = myValue.concat("Channel State: Transit Messages ");
                 for (int i = 0; i < N; i++)
                     if (isNeighbor(i))
                         while (!chan[i].isEmpty())
-                            System.out.println(
-                            ((Msg) chan[i].removeFirst()).toString());
+                            myValue = myValue.concat( newLine +
+                            ( chan[i].removeFirst()).toString());
+                System.out.println( myValue );
             }
         } else { // application message
             if ((myColor == red) && (!closed[src]))

@@ -10,13 +10,14 @@ import java.util.*;
 import linker.*;
 import linker.Process;
 import message.*;
+import camera.*;
 /**
  * 
  * 		---	!	1. Aplikacija	!	----
  * @author franv
  *
  */
-public class App1 extends Process {
+public class App1 extends Process implements CamUser{
 	static int myId;
 	
     public App1(Linker initComm) {
@@ -69,6 +70,11 @@ public class App1 extends Process {
         }
         return destIds;        
     }
+    public synchronized String localState() {
+        FileSystem files = new FileSystem(String.valueOf(myId));
+        String newLine = System.getProperty("line.separator");
+        return "List of all files at " + String.valueOf(myId) + ":" + newLine + files.getDocumentList();
+    }
     
     
     /**
@@ -98,10 +104,15 @@ public class App1 extends Process {
         	throw new Exception("Invalid comandline arguments!");
         
         App1 c = new App1(comm);
+        Camera camera = new RecvCamera( comm, c );
+
+        /*for (int i = 0; i < numProc; i++)
+            if (i != myId) 
+            	(new ListenerThread(i, c)).start();*/
 
         for (int i = 0; i < numProc; i++)
             if (i != myId) 
-            	(new ListenerThread(i, c)).start();
+                (new ListenerThread(i, camera)).start();
         
         FileSystem files = new FileSystem(String.valueOf(myId));
         while (true) {
@@ -141,6 +152,17 @@ public class App1 extends Process {
             		System.out.println("File " + fileName + " deleted.");
             	else
             		System.out.println("File " + fileName + " not found.");            	
+            }
+            else if( chatMsg.equals( "edit" ) )
+            {
+                String fileName = App1.getUserInput(din, "Enter file name:");
+                String contents = files.getFile( fileName );
+                System.out.println( contents );
+                contents = App1.getUserInput(din, "Enter file contents:");
+                files.writeToFile(fileName, contents);
+            }
+            else if( chatMsg.equals( "snapshot" ) ){
+                camera.globalState();
             }
             else
             {

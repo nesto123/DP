@@ -12,6 +12,6 @@ public interface CamUser extends MsgHandler {
     /**
      * Tracks local state of one process.
      */
-    void localState();
+    String localState();
 }
 
