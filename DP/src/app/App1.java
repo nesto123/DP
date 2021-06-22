@@ -17,7 +17,7 @@ import camera.*;
  * @author franv
  *
  */
-public class App1 extends Process implements CamUser{
+public class App1 extends Process implements CamUser, FuncUser{
 	static int myId;
 	
     public App1(Linker initComm) {
@@ -42,6 +42,8 @@ public class App1 extends Process implements CamUser{
 			}
 
         }
+        else if( tag.equals( "invite" ) )
+            System.out.println("E tu je zajeb" );
     }
     public static String getUserInput(BufferedReader din, String  Message) throws Exception {
         System.out.println(Message);
@@ -75,6 +77,10 @@ public class App1 extends Process implements CamUser{
         String newLine = System.getProperty("line.separator");
         return "List of all files at " + String.valueOf(myId) + ":" + newLine + files.getDocumentList();
     }
+    public String func( String x, String y ){
+        x = x.concat( y );
+        return x;
+    }
     
     
     /**
@@ -104,7 +110,9 @@ public class App1 extends Process implements CamUser{
         	throw new Exception("Invalid comandline arguments!");
         
         App1 c = new App1(comm);
-        Camera camera = new RecvCamera( comm, c );
+        GlobalFunc g = new GlobalFunc(comm, (myId==0));
+        g.makeTree();
+        Camera camera = new RecvCamera( comm, c, g );
 
         /*for (int i = 0; i < numProc; i++)
             if (i != myId) 
@@ -113,6 +121,8 @@ public class App1 extends Process implements CamUser{
         for (int i = 0; i < numProc; i++)
             if (i != myId) 
                 (new ListenerThread(i, camera)).start();
+
+        //g.makeTree();
         
         FileSystem files = new FileSystem(String.valueOf(myId));
         while (true) {
@@ -163,6 +173,13 @@ public class App1 extends Process implements CamUser{
             }
             else if( chatMsg.equals( "snapshot" ) ){
                 camera.globalState();
+                System.out.println( "Jesmo tu?" );
+                System.out.println( camera.getMyValue() );
+                /*g.initialize( camera.getMyValue(), c);
+                System.out.println( "tu 1" );
+                String globalSum = g.computeGlobal();
+                System.out.println( "tu 2" );
+                System.out.println( globalSum );*/
             }
             else
             {

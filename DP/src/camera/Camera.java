@@ -14,4 +14,5 @@ public interface Camera extends MsgHandler {
      * Gets global snapshot.
      */
     void globalState();
+    String getMyValue();
 }

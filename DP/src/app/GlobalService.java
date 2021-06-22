@@ -1,5 +1,8 @@
 package app;
 
-public interface GlobalService {
+import message.MsgHandler;
 
+public interface GlobalService extends MsgHandler{
+    public void initialize(String x, FuncUser prog);
+    public String computeGlobal();
 }

@@ -8,5 +8,5 @@ package app;
  *
  */
 public interface FuncUser {
-
+    public String func(String x, String y);
 }

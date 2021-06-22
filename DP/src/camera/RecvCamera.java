@@ -7,6 +7,7 @@ import java.util.*;
 import linker.Linker;
 import linker.Process;
 import message.Msg;
+import app.GlobalFunc;
 
 /**
  * Chandy Lamport algorithm.
@@ -38,13 +39,17 @@ public class RecvCamera  extends Process implements Camera {
      * Value for global function
      */
     String myValue;
+    /**
+     * Object representing global function finder
+     */
+    GlobalFunc func;
     
     /**
      * Initially all channels are open and empty.
      * @param initComm
      * @param app
      */
-    public RecvCamera(Linker initComm, CamUser app) {
+    public RecvCamera(Linker initComm, CamUser app, GlobalFunc func ) {
         super(initComm);
         closed = new boolean[N];
         chan = new LinkedList[N];
@@ -56,6 +61,7 @@ public class RecvCamera  extends Process implements Camera {
                 chan[i] = new LinkedList();
             } else closed[i] = true;
         this.app = app;
+        this.func = func;
     }
     /**
      * Changes  color of process to red, marks its local state and
@@ -78,15 +84,28 @@ public class RecvCamera  extends Process implements Camera {
             closed[src] = true;
             String newLine = System.getProperty("line.separator");
             if (isDone()){
+                System.out.println("skuzija da san zavrsija za poruku kanala " + src );
                 myValue = myValue.concat("Channel State: Transit Messages ");
                 for (int i = 0; i < N; i++)
                     if (isNeighbor(i))
                         while (!chan[i].isEmpty())
                             myValue = myValue.concat( newLine +
                             ( chan[i].removeFirst()).toString());
-                System.out.println( myValue );
+                System.out.println( "---------------------" + newLine + myValue + newLine + "-------------------------");
+                /*if( myId == 0 ){
+                    func.initialize( myValue, app);
+                    System.out.println( "tu 1" );
+                    String globalSum = func.computeGlobal();
+                    System.out.println( "tu 2" );
+                    System.out.println( globalSum );
+                }*/
             }
-        } else { // application message
+        }
+        else if( tag.equals( "subTreeVal" ) || tag.equals("globalFunc") || tag.equals("invite") || tag.equals("accept") || tag.equals("reject")){
+            System.out.println( "We're in" );
+            func.handleMsg(m, src, tag);
+        }
+        else { // application message
             if ((myColor == red) && (!closed[src]))
                 chan[src].add(m);
             app.handleMsg(m, src, tag); // give it to app
@@ -102,6 +121,12 @@ public class RecvCamera  extends Process implements Camera {
         for (int i = 0; i < N; i++)
             if (!closed[i]) return false;
         return true;
+    }
+    /**
+     * Get final local value
+     */
+    public synchronized String getMyValue(){
+        return myValue;
     }
 }
 
