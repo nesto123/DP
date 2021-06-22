@@ -80,6 +80,7 @@ public class RecvCamera  extends Process implements Camera {
      */
     public synchronized void handleMsg(Msg m, int src, String tag) {
         if (tag.equals("marker")) {
+            System.out.println(":: " + m.getTitle() + " ::" );
             if (myColor == white) globalState();
             closed[src] = true;
             String newLine = System.getProperty("line.separator");
