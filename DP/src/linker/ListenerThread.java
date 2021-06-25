@@ -22,7 +22,7 @@ public class ListenerThread extends Thread {
     public void run() {
         while (true) {
             try {
-                Msg m = process.receiveMsg(channel);             
+                Msg m = process.receiveMsg(channel);       
                 process.handleMsg(m, m.getSrcId(), m.getTag());
             } catch (IOException e) {
                 System.err.println(e);            

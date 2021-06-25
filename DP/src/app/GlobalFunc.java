@@ -26,9 +26,6 @@ public class GlobalFunc extends Process implements GlobalService{
         super(initComm);
         tree = new SpanTree(initComm, isRoot);
     }
-    public void makeTree(){
-        tree.makeTree();
-    }
     public void initialize(String myValue, FuncUser prog) {
         this.myValue = myValue;
         this.prog = prog;
@@ -38,16 +35,20 @@ public class GlobalFunc extends Process implements GlobalService{
     public synchronized String computeGlobal() {
         pending.addAll(tree.children);
         pendingSet = true;
+        System.out.println( "krenija racunat" );
         notifyAll();
         while (!pending.isEmpty()) myWait();
         if (tree.parent == myId) { // root node
             answer = myValue;
-        } else { //non-root node
+        } 
+        else { //non-root node
             sendMsg(tree.parent, "subTreeVal", myValue);
             answerRecvd = false;
             while (!answerRecvd) myWait();
         }
         sendChildren(answer);
+        if( myId == 0 )
+            System.out.println( answer );
         return answer;
     }
     void sendChildren(String value) {
@@ -60,16 +61,18 @@ public class GlobalFunc extends Process implements GlobalService{
     public synchronized void handleMsg(Msg m, int src, String tag) {
         tree.handleMsg(m, src, tag);
         if (tag.equals("subTreeVal")) {
+            System.out.println( pendingSet );
             while (!pendingSet) myWait();
             pending.remove(src);
             myValue = prog.func(myValue, m.getMessage());
+            System.out.println( "Do ode je doša" );
             if (pending.isEmpty()) notifyAll();
         } else if (tag.equals("globalFunc")) {
             answer = m.getMessage();
             answerRecvd = true;
             notifyAll();
         }
-        else if( tag.equals("invite") || tag.equals("accept") || tag.equals("reject"))
-            tree.handleMsg(m, src, tag);
+        //else if( tag.equals("invite") || tag.equals("accept") || tag.equals("reject"))
+            //tree.handleMsg(m, src, tag);
     }
 }

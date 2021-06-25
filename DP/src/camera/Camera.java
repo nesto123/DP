@@ -15,4 +15,5 @@ public interface Camera extends MsgHandler {
      */
     void globalState();
     String getMyValue();
+    boolean isFinished();
 }

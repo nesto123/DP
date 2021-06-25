@@ -80,7 +80,6 @@ public class RecvCamera  extends Process implements Camera {
      */
     public synchronized void handleMsg(Msg m, int src, String tag) {
         if (tag.equals("marker")) {
-            System.out.println(":: " + m.getTitle() + " ::" );
             if (myColor == white) globalState();
             closed[src] = true;
             String newLine = System.getProperty("line.separator");
@@ -90,19 +89,17 @@ public class RecvCamera  extends Process implements Camera {
                 for (int i = 0; i < N; i++)
                     if (isNeighbor(i))
                         while (!chan[i].isEmpty())
-                            myValue = myValue.concat( newLine +
+                            myValue = myValue.concat( "||" +
                             ( chan[i].removeFirst()).toString());
                 System.out.println( "---------------------" + newLine + myValue + newLine + "-------------------------");
-                /*if( myId == 0 ){
-                    func.initialize( myValue, app);
-                    System.out.println( "tu 1" );
-                    String globalSum = func.computeGlobal();
-                    System.out.println( "tu 2" );
-                    System.out.println( globalSum );
+                func.initialize( myValue, app );
+                /*if( myId != 0 ){
+                    String gs = "";
+                    gs = func.computeGlobal();
                 }*/
             }
         }
-        else if( tag.equals( "subTreeVal" ) || tag.equals("globalFunc") || tag.equals("invite") || tag.equals("accept") || tag.equals("reject")){
+        else if( tag.equals( "subTreeVal" ) || tag.equals("globalFunc") || tag.equals("invite") || tag.equals("accept") || tag.equals("reject") ){
             System.out.println( "We're in" );
             func.handleMsg(m, src, tag);
         }
@@ -112,6 +109,7 @@ public class RecvCamera  extends Process implements Camera {
             app.handleMsg(m, src, tag); // give it to app
         }
     }
+    //public synchronized handleMsg()
     /**
      * Determines if process has marked its local state and all input channels,
      * if it has returns true else false.
@@ -128,6 +126,9 @@ public class RecvCamera  extends Process implements Camera {
      */
     public synchronized String getMyValue(){
         return myValue;
+    }
+    public synchronized boolean isFinished(){
+        return true;
     }
 }
 

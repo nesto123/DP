@@ -11,13 +11,14 @@ import linker.*;
 import linker.Process;
 import message.*;
 import camera.*;
+import detector.DSTerm;
 /**
  * 
  * 		---	!	1. Aplikacija	!	----
  * @author franv
  *
  */
-public class App1 extends Process implements CamUser, FuncUser{
+public class App1 extends Process implements CamUser{
 	static int myId;
 	
     public App1(Linker initComm) {
@@ -75,7 +76,7 @@ public class App1 extends Process implements CamUser, FuncUser{
     public synchronized String localState() {
         FileSystem files = new FileSystem(String.valueOf(myId));
         String newLine = System.getProperty("line.separator");
-        return "List of all files at " + String.valueOf(myId) + ":" + newLine + files.getDocumentList();
+        return "----------||List of all files at " + String.valueOf(myId) + ":" + "||" + files.getDocumentListInLine();
     }
     public String func( String x, String y ){
         x = x.concat( y );
@@ -111,8 +112,7 @@ public class App1 extends Process implements CamUser, FuncUser{
         
         App1 c = new App1(comm);
         GlobalFunc g = new GlobalFunc(comm, (myId==0));
-        g.makeTree();
-        Camera camera = new RecvCamera( comm, c, g );
+        Camera camera = new TermRecvCamera( comm, c, g, new DSTerm( comm ), numProc );
 
         /*for (int i = 0; i < numProc; i++)
             if (i != myId) 
@@ -173,12 +173,9 @@ public class App1 extends Process implements CamUser, FuncUser{
             }
             else if( chatMsg.equals( "snapshot" ) ){
                 camera.globalState();
-                System.out.println( "Jesmo tu?" );
-                System.out.println( camera.getMyValue() );
+                //while( camera.isFinished() ) camera.waitForDone();
                 /*g.initialize( camera.getMyValue(), c);
-                System.out.println( "tu 1" );
                 String globalSum = g.computeGlobal();
-                System.out.println( "tu 2" );
                 System.out.println( globalSum );*/
             }
             else

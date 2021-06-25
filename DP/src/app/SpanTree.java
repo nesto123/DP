@@ -20,19 +20,13 @@ public class SpanTree extends Process{
     public SpanTree(Linker initComm, boolean isRoot) {
         super(initComm);
         inComm = initComm;
-        if (isRoot) {
+        if (isRoot){
             parent = myId;
-	    /*if (initComm.neighbors.size() == 0) 
-		done = true;
-        else 
-		    sendToNeighbors( "invite", myId);*/
+            if (initComm.neighbors.size() == 0) 
+                done = true;
+            else 
+                sendToNeighbors( "invite", myId);
         }
-    }
-    public void makeTree(){
-	    if (inComm.neighbors.size() == 0) 
-		    done = true;
-        else 
-		    sendToNeighbors( "invite", myId);
     }
     public synchronized void waitForDone() { // block till children known
 	while (!done) myWait();
@@ -53,9 +47,10 @@ public class SpanTree extends Process{
             if (tag.equals("accept")) children.add(src);
             numReports++;
             if (numReports == inComm.neighbors.size()) {
-		done = true;
-		notify();
-	    }
+                done = true;
+                System.out.println( children.toString() );
+                notify();
+            }
         }
     }
 }

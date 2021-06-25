@@ -44,6 +44,22 @@ public class FileSystem {
 		
 		return fileList;
 	}
+
+	public String getDocumentListInLine()
+	{
+		File[] listOfFiles = folder.listFiles();
+		String fileList = "";
+		
+		for (int i = 0; i < listOfFiles.length; i++) 
+		{
+		  if (listOfFiles[i].isFile()) 
+		  {
+		    fileList += listOfFiles[i].getName() + "||";
+		  }
+		}
+		
+		return fileList;
+	}
 	
 	public boolean createFile(String fileName, String contents)
 	{
