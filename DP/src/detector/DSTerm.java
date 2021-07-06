@@ -18,6 +18,7 @@ public class DSTerm extends Process implements TermDetector{
         finished = false;
     }
     public synchronized void initiate(){
+        finished = false;
     }
     public synchronized void handleMsg( Msg m, int src, String tag ){
         if( tag.equals( "signal" ) ){

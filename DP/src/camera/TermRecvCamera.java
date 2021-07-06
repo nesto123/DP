@@ -4,6 +4,9 @@ import app.GlobalFunc;
 import detector.TermDetector;
 import linker.Linker;
 import message.Msg;
+
+import java.util.LinkedList;
+
 import app.CentMutex;
 import app.FileSystem;
 
@@ -11,13 +14,14 @@ public class TermRecvCamera extends RecvCamera{
     TermDetector td = null;
     boolean finished = false;
     CentMutex lock;
-    int D;
+    int D, temp;
     int version = 0;
     public TermRecvCamera( Linker initComm, CamUser app, GlobalFunc func, TermDetector td, int num ){
         super( initComm, app, func);
         this.td = td;
         lock = new CentMutex( initComm );
         D = num;
+        temp = num;
     }
     public synchronized void globalState(){
         super.globalState();
@@ -39,6 +43,7 @@ public class TermRecvCamera extends RecvCamera{
             //lock.requestCS();
             sendMsg( 0, "local", myValue );
             //lock.releaseCS();
+            finish();
         }
         else if( tag.equals( "local" ) ){
             myValue = myValue.concat( "||" + m.getTitle() + m.getMessage().substring( 0, m.getMessage().length() - 2 ) );
@@ -50,6 +55,7 @@ public class TermRecvCamera extends RecvCamera{
                 FileSystem files = new FileSystem( "Snapshots" );
                 version++;
                 files.createFile( "snapshot " + version , myValue );
+                finish();
             }
         }
         else if( tag.equals( "request" ) || tag.equals( "release" ) || tag.equals( "okay" ) )
@@ -65,5 +71,15 @@ public class TermRecvCamera extends RecvCamera{
     }
     public synchronized void waitForDone(){
         while( !finished ) myWait();
+    }
+    public void finish(){
+        myValue = "";
+        myColor = white;
+        D = temp;
+        for (int i = 0; i < N; i++)
+            if (isNeighbor(i)) {
+                closed[i] = false;
+                chan[i] = new LinkedList();
+            } else closed[i] = true;
     }
 }

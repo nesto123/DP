@@ -103,6 +103,8 @@ public class RecvCamera  extends Process implements Camera {
             System.out.println( "We're in" );
             func.handleMsg(m, src, tag);
         }
+        else if( tag.equals( "matrix" ) )
+            app.handleMsg( m, src, tag );
         else { // application message
             if ((myColor == red) && (!closed[src]))
                 chan[src].add(m);
