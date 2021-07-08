@@ -43,8 +43,6 @@ public class App1 extends Process implements CamUser{
 			}
 
         }
-        else if( tag.equals( "invite" ) )
-            System.out.println("E tu je zajeb" );
     }
     public static String getUserInput(BufferedReader din, String  Message) throws Exception {
         System.out.println(Message);
@@ -173,10 +171,6 @@ public class App1 extends Process implements CamUser{
             }
             else if( chatMsg.equals( "snapshot" ) ){
                 camera.globalState();
-                //while( camera.isFinished() ) camera.waitForDone();
-                /*g.initialize( camera.getMyValue(), c);
-                String globalSum = g.computeGlobal();
-                System.out.println( globalSum );*/
             }
             else
             {

@@ -84,14 +84,13 @@ public class RecvCamera  extends Process implements Camera {
             closed[src] = true;
             String newLine = System.getProperty("line.separator");
             if (isDone()){
-                System.out.println("skuzija da san zavrsija za poruku kanala " + src );
                 myValue = myValue.concat("Channel State: Transit Messages ");
                 for (int i = 0; i < N; i++)
                     if (isNeighbor(i))
                         while (!chan[i].isEmpty())
                             myValue = myValue.concat( "||" +
                             ( chan[i].removeFirst()).toString());
-                System.out.println( "---------------------" + newLine + myValue + newLine + "-------------------------");
+                //System.out.println( "---------------------" + newLine + myValue + newLine + "-------------------------");
                 func.initialize( myValue, app );
                 /*if( myId != 0 ){
                     String gs = "";
@@ -100,7 +99,6 @@ public class RecvCamera  extends Process implements Camera {
             }
         }
         else if( tag.equals( "subTreeVal" ) || tag.equals("globalFunc") || tag.equals("invite") || tag.equals("accept") || tag.equals("reject") ){
-            System.out.println( "We're in" );
             func.handleMsg(m, src, tag);
         }
         else if( tag.equals( "matrix" ) )

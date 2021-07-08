@@ -33,7 +33,6 @@ public class SpanTree extends Process{
     }
     public synchronized void handleMsg(Msg m, int src, String tag) {
         if (tag.equals("invite")) {
-            System.out.println( "::Jesmo tu?::" );
             if (parent == -1) {
             	numReports++;
                 parent = src;
