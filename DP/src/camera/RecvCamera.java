@@ -7,7 +7,6 @@ import java.util.*;
 import linker.Linker;
 import linker.Process;
 import message.Msg;
-import app.GlobalFunc;
 
 /**
  * Chandy Lamport algorithm.
@@ -39,17 +38,14 @@ public class RecvCamera  extends Process implements Camera {
      * Value for global function
      */
     String myValue;
-    /**
-     * Object representing global function finder
-     */
-    GlobalFunc func;
+   
     
     /**
      * Initially all channels are open and empty.
      * @param initComm
      * @param app
      */
-    public RecvCamera(Linker initComm, CamUser app, GlobalFunc func ) {
+    public RecvCamera(Linker initComm, CamUser app ) {
         super(initComm);
         closed = new boolean[N];
         chan = new LinkedList[N];
@@ -61,7 +57,6 @@ public class RecvCamera  extends Process implements Camera {
                 chan[i] = new LinkedList();
             } else closed[i] = true;
         this.app = app;
-        this.func = func;
     }
     /**
      * Changes  color of process to red, marks its local state and
@@ -91,15 +86,7 @@ public class RecvCamera  extends Process implements Camera {
                             myValue = myValue.concat( "||" +
                             ( chan[i].removeFirst()).toString());
                 //System.out.println( "---------------------" + newLine + myValue + newLine + "-------------------------");
-                func.initialize( myValue, app );
-                /*if( myId != 0 ){
-                    String gs = "";
-                    gs = func.computeGlobal();
-                }*/
             }
-        }
-        else if( tag.equals( "subTreeVal" ) || tag.equals("globalFunc") || tag.equals("invite") || tag.equals("accept") || tag.equals("reject") ){
-            func.handleMsg(m, src, tag);
         }
         else if( tag.equals( "matrix" ) )
             app.handleMsg( m, src, tag );

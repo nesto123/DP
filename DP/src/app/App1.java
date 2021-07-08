@@ -109,8 +109,7 @@ public class App1 extends Process implements CamUser{
         	throw new Exception("Invalid comandline arguments!");
         
         App1 c = new App1(comm);
-        GlobalFunc g = new GlobalFunc(comm, (myId==0));
-        Camera camera = new TermRecvCamera( comm, c, g, new DSTerm( comm ), numProc );
+        Camera camera = new TermRecvCamera( comm, c, new DSTerm( comm ), numProc );
 
         /*for (int i = 0; i < numProc; i++)
             if (i != myId) 

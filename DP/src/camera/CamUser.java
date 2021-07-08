@@ -4,12 +4,11 @@
 package camera;
 
 import message.MsgHandler;
-import app.FuncUser;
 
 /**
  * Must be implemented by application for getting its  snapshot.
  */
-public interface CamUser extends MsgHandler, FuncUser {
+public interface CamUser extends MsgHandler {
     /**
      * Tracks local state of one process.
      */

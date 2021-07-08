@@ -1,6 +1,5 @@
 package camera;
 
-import app.GlobalFunc;
 import detector.TermDetector;
 import linker.Linker;
 import message.Msg;
@@ -16,8 +15,8 @@ public class TermRecvCamera extends RecvCamera{
     CentMutex lock;
     int D, temp;
     int version = 0;
-    public TermRecvCamera( Linker initComm, CamUser app, GlobalFunc func, TermDetector td, int num ){
-        super( initComm, app, func);
+    public TermRecvCamera( Linker initComm, CamUser app, TermDetector td, int num ){
+        super( initComm, app );
         this.td = td;
         lock = new CentMutex( initComm );
         D = num;
