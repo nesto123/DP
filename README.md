@@ -19,6 +19,19 @@ distribuiranu aplikaciju koja simulira rad ovog sustava. Svaki poslužitelj treb
 jedan proces. Globalna snimka mora biti realizirana kao cjeloviti izvještaj na jednom mjestu,
 dakle ne smije se sastojati od distribuiranih dijelova.
 
+## Running instructions
+
+This app is developed in [Eclipse IDE](https://www.eclipse.org/ide/). 
+ **Prerequisite** for runing and/or editing: [Java JDK 16](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html), [JRE](https://www.java.com/en/download/manual.jsp).
+
+Beta release of symulated distributed Document Management System app is avalible in [releases](https://github.com/nesto123/DP/releases).
+
+To run app, follow this steps:
+1. In terminal run *NameServer*:  `java -jar NameServer.jar`
+2. In terminal run as many application instances as you want with:  `java -jar App.jar`
+    * `App.jar` will ask you to enter process id and total number of processes.
+
+
 ## Licence
   
  [DP](https://github.com/nesto123/DP) © 2021 by [Fran Vojković](https://github.com/nesto123) and [Alen Živković](https://github.com/zialen) is licensed under [Attribution-NonCommercial-ShareAlike 4.0 International][cc].
