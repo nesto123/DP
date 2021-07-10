@@ -77,7 +77,7 @@ public class App1 extends Process implements CamUser{
         BufferedReader din = new BufferedReader(
 				new InputStreamReader(System.in));
         
-        String[] args1 =  App1.getUserInput(din, "Enter arguments: ").split(" ");
+        String[] args1 =  App1.getUserInput(din, "Enter arguments (process_number total_process_number): ").split(" ");
         
         myId = Integer.parseInt(args1[0]);					//	Broj tog processa
         int numProc = Integer.parseInt(args1[1]);				//	Ukupan broj procesa
