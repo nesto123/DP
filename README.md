@@ -25,7 +25,7 @@ dakle ne smije se sastojati od distribuiranih dijelova.
 This app is developed in [Eclipse IDE](https://www.eclipse.org/ide/). 
  **Prerequisite** for runing and/or editing: [Java JDK 16](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html), [JRE](https://www.java.com/en/download/manual.jsp).
 
-Beta release of symulated distributed Document Management System app is avalible in [releases](https://github.com/nesto123/DP/releases).
+Beta release of simulated distributed Document Management System app is avalible in [releases](https://github.com/nesto123/DP/releases).
 
 To run app, follow this steps:
 1. In terminal run *NameServer*:  `java -jar NameServer.jar`
