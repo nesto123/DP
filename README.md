@@ -1,5 +1,6 @@
 # DP
 [![CC BY-NC-SA 4.0][cc-shield]][cc]
+[![stability-beta](https://img.shields.io/badge/stability-beta-33bbff.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#beta)
 
 
 Global snapshot in document management system for university course [Distribuirani procesi](https://www.pmf.unizg.hr/math/predmet/dispro), academic year 2020/2021, University of Zagreb, Faculty of Science, Department of Mathematics.
